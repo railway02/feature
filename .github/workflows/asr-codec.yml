@@ -21,6 +21,12 @@ jobs:
           path: .asr-private.pem
           key: private-asr-key-v1
 
+      - name: Install ffmpeg
+        if: hashFiles('asr_payload/codec.ready') != ''
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+
       - name: Decode encrypted payload
         if: hashFiles('asr_payload/codec.ready') != ''
         run: |
