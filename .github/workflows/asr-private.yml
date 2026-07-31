@@ -56,14 +56,12 @@ jobs:
           iv=open('iv.bin','rb').read()
           tag=open('tag.bin','rb').read()
           ct=open('audio.enc','rb').read()
-          pt=AESGCM(key).decrypt(iv, ct+tag, None)
-          open('audio.opus','wb').write(pt)
+          open('audio.opus','wb').write(AESGCM(key).decrypt(iv, ct+tag, None))
           PY
 
       - name: Install ASR
         if: hashFiles('asr_payload/ready.flag') != ''
-        run: |
-          python3 -m pip install --quiet faster-whisper
+        run: python3 -m pip install --quiet faster-whisper
 
       - name: Transcribe Mandarin audio
         if: hashFiles('asr_payload/ready.flag') != ''
@@ -71,8 +69,8 @@ jobs:
           cat > transcribe.py <<'PY'
           from faster_whisper import WhisperModel
           model = WhisperModel('small', device='cpu', compute_type='int8')
-          prompt = '高尚德，二维DSA，颅内动脉瘤，特征提取，CAVE，SEA-RAFT，perfDSA，RROC，不良转归，ROI，卷积神经网络，backbone，影像，训练，验证集，论文，实验。'
-          segments, info = model.transcribe('audio.opus', language='zh', beam_size=5, vad_filter=True, initial_prompt=prompt, word_timestamps=False)
+          prompt = '高尚德，二维DSA，颅内动脉瘤，特征提取，CAVE，SEA-RAFT，perfDSA，RROC，不良转归，ROI，Mask，分割，卷积神经网络，backbone，影像，训练，验证集，论文，实验。'
+          segments, info = model.transcribe('audio.opus', language='zh', beam_size=5, vad_filter=False, initial_prompt=prompt, condition_on_previous_text=True, word_timestamps=False)
           segs=list(segments)
           def ts(sec):
               ms=int(round(sec*1000)); h=ms//3600000; ms%=3600000; m=ms//60000; ms%=60000; s=ms//1000; ms%=1000
@@ -89,7 +87,7 @@ jobs:
         if: hashFiles('asr_payload/ready.flag') != ''
         uses: actions/upload-artifact@v4
         with:
-          name: asr-transcript
+          name: asr-transcript-hq
           path: |
             transcript_raw.txt
             transcript.srt
