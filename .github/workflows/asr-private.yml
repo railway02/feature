@@ -1,0 +1,96 @@
+name: Private ASR
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  asr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore private key
+        id: keycache
+        uses: actions/cache/restore@v4
+        with:
+          path: .asr-private.pem
+          key: private-asr-key-v1
+
+      - name: Generate private key
+        if: steps.keycache.outputs.cache-hit != 'true'
+        run: |
+          openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 -out .asr-private.pem
+          openssl pkey -in .asr-private.pem -pubout -out public.pem
+
+      - name: Save private key
+        if: steps.keycache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .asr-private.pem
+          key: private-asr-key-v1
+
+      - name: Export public key
+        if: steps.keycache.outputs.cache-hit != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: asr-public-key
+          path: public.pem
+          retention-days: 1
+
+      - name: Decode encrypted payload
+        if: hashFiles('asr_payload/ready.flag') != ''
+        run: |
+          cat asr_payload/audio.part* | base64 -d > audio.enc
+          base64 -d asr_payload/key.b64 > key.enc
+          base64 -d asr_payload/iv.b64 > iv.bin
+          base64 -d asr_payload/tag.b64 > tag.bin
+          openssl pkeyutl -decrypt -inkey .asr-private.pem -in key.enc -out aes.key -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256
+          python3 - <<'PY'
+          from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+          key=open('aes.key','rb').read()
+          iv=open('iv.bin','rb').read()
+          tag=open('tag.bin','rb').read()
+          ct=open('audio.enc','rb').read()
+          pt=AESGCM(key).decrypt(iv, ct+tag, None)
+          open('audio.opus','wb').write(pt)
+          PY
+
+      - name: Install ASR
+        if: hashFiles('asr_payload/ready.flag') != ''
+        run: |
+          python3 -m pip install --quiet faster-whisper
+
+      - name: Transcribe Mandarin audio
+        if: hashFiles('asr_payload/ready.flag') != ''
+        run: |
+          cat > transcribe.py <<'PY'
+          from faster_whisper import WhisperModel
+          model = WhisperModel('small', device='cpu', compute_type='int8')
+          prompt = '高尚德，二维DSA，颅内动脉瘤，特征提取，CAVE，SEA-RAFT，perfDSA，RROC，不良转归，ROI，卷积神经网络，backbone，影像，训练，验证集，论文，实验。'
+          segments, info = model.transcribe('audio.opus', language='zh', beam_size=5, vad_filter=True, initial_prompt=prompt, word_timestamps=False)
+          segs=list(segments)
+          def ts(sec):
+              ms=int(round(sec*1000)); h=ms//3600000; ms%=3600000; m=ms//60000; ms%=60000; s=ms//1000; ms%=1000
+              return f'{h:02d}:{m:02d}:{s:02d},{ms:03d}'
+          with open('transcript_raw.txt','w',encoding='utf-8') as f:
+              for x in segs: f.write(f'[{x.start:07.2f}-{x.end:07.2f}] {x.text.strip()}\n')
+          with open('transcript.srt','w',encoding='utf-8') as f:
+              for i,x in enumerate(segs,1): f.write(f'{i}\n{ts(x.start)} --> {ts(x.end)}\n{x.text.strip()}\n\n')
+          print('segments',len(segs),'language',info.language,'prob',info.language_probability)
+          PY
+          python3 transcribe.py
+
+      - name: Upload transcript
+        if: hashFiles('asr_payload/ready.flag') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: asr-transcript
+          path: |
+            transcript_raw.txt
+            transcript.srt
+          retention-days: 1
