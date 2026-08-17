@@ -1,0 +1,159 @@
+{
+  "project_root": "/root/autodl-tmp/aneurysm",
+  "code_root": "/root/autodl-tmp/aneurysm/code/api_png2d_spatial_backbones_v6_strict",
+  "output_root": "/root/autodl-tmp/aneurysm/outputs/api_png2d_spatial_backbones_v6_strict",
+  "report_root": "/root/autodl-tmp/aneurysm/reports/api_png2d_spatial_backbones_v6_strict",
+  "environment_python": "/root/autodl-tmp/envs/png2d-spatial-v6/bin/python",
+  "torch_home": "/root/autodl-tmp/envs/png2d-spatial-v6/torch_cache",
+  "sources": {
+    "v5_code_root": "/root/autodl-tmp/aneurysm/code/api_png2d_segresnet_cave_fusion_v5_series_mapped_teacher_ready",
+    "v5_config": "/root/autodl-tmp/aneurysm/configs/api_png2d_segresnet_cave_fusion_v5_series_mapped_teacher_ready_strict.json",
+    "v5_output_root": "/root/autodl-tmp/aneurysm/outputs/api_png2d_segresnet_cave_fusion_v5_series_mapped_teacher_ready_strict",
+    "v5_case_manifest": "/root/autodl-tmp/aneurysm/outputs/api_png2d_segresnet_cave_fusion_v5_series_mapped_teacher_ready_strict/case_manifest.csv",
+    "v5_fusion_architecture": "/root/autodl-tmp/aneurysm/code/api_png2d_segresnet_cave_fusion_v5_series_mapped_teacher_ready/fusion_models.py",
+    "pilot_fold1_split": "/root/autodl-tmp/aneurysm/reports/api_png2d_spatial_branch_failure_audit_20260810/pilot/outer_development_fold_1/segresnet_geometry/pilot_patient_split.csv",
+    "pilot_fold1_metrics": "/root/autodl-tmp/aneurysm/reports/api_png2d_spatial_branch_failure_audit_20260810/pilot/outer_development_fold_1/segresnet_geometry/metrics.json",
+    "phase_mapping_manifest": "/root/autodl-tmp/aneurysm/manifests/api_png2d_gtmask_roi_cave_v2_complete_mapping_fullseq/roi_phase_manifest_eligible.csv",
+    "phase_mapping_manifest_sha256": "ec01cd477430e7eebbd44b690446a892a0016d03a6508396badbc7e3ccd2a172",
+    "segmentation_inventory": "/root/autodl-tmp/aneurysm/manifests/api_png2d_gtmask_roi_cave_v2_complete_mapping_fullseq/png_annotation_inventory.csv",
+    "segmentation_inventory_sha256": "5bf4a91c76470a0f01496df78f7e740b746f5538c37669a30e47c99a6cafbdda",
+    "temporal_train_npz": "/root/autodl-tmp/aneurysm/outputs/api_png2d_gtmask_roi_cave_v2_complete_mapping_fullseq/adverse_prepost_series_task_v3/train_features.npz",
+    "temporal_train_npz_sha256": "80caf067c007be5ab4be2ce2d22e6a5538246a2d5fd92a7afc7ff86810fb34f7",
+    "temporal_valid_npz": "/root/autodl-tmp/aneurysm/outputs/api_png2d_gtmask_roi_cave_v2_complete_mapping_fullseq/adverse_prepost_series_task_v3/valid_features.npz",
+    "temporal_valid_npz_sha256": "fbb39f94743b37dd9945407189678e8ff4850723485af2ca53a5767da9fb0726"
+  },
+  "pretrained": {
+    "deeplab_encoder_name": "resnet50",
+    "deeplab_encoder_weights": "imagenet",
+    "source_url": "https://download.pytorch.org/models/resnet50-19c8e357.pth",
+    "path": "/root/autodl-tmp/envs/png2d-spatial-v6/torch_cache/hub/checkpoints/resnet50-19c8e357.pth",
+    "sha256": "19c8e3572231adff6824a2da93fd67b5986919a2e65f8b6007eab4edee220097",
+    "size_bytes": 102502400
+  },
+  "data": {
+    "phases": ["Pre", "Post"],
+    "input_size": 768,
+    "percentile_low": 1.0,
+    "percentile_high": 99.0,
+    "letterbox": true,
+    "expected_train_series": 781,
+    "expected_train_phase_rows": 1562,
+    "expected_fold_counts": {"1": 157, "2": 156, "3": 156, "4": 156, "5": 156}
+  },
+  "all2d_segmentation": {
+    "enabled": false,
+    "population": "all_/root/autodl-tmp/2D image/mask pairs from frozen segmentation inventory",
+    "expected_phase_rows": 2233,
+    "expected_patients": 1216,
+    "inner_val_fraction": 0.15,
+    "seed": 20260808,
+    "selection_metric": "patient-level inner-valid macro Dice",
+    "refit_after_selection": true,
+    "outcome_protocol_note": "Segmentation uses all 2D annotations before downstream adverse-outcome cross-fit; resulting spatial representation is not strict segmentation OOF."
+  },
+  "expanded_strict_segmentation": {
+    "protocol": "expanded_strict_segmentation_trainxlsx_patient_outer_crossfit",
+    "segmentation_train_metadata": "/root/autodl-tmp/aneurysm/metadata/Train.xlsx",
+    "segmentation_train_metadata_sha256": "f9b706b61259210d9a301054f0bfc5b8dec277cf3c2b2e95240d3e3334ae2b54",
+    "segmentation_valid_metadata": "/root/autodl-tmp/aneurysm/metadata/valid.xlsx",
+    "segmentation_valid_metadata_sha256": "7861cf6029e1ce486877c43bc3309e38689e36a07d2db521c15c4470c0c663f3",
+    "phase_eligible_manifest": "/root/autodl-tmp/aneurysm/manifests/api_png2d_gtmask_roi_cave_v2_complete_mapping_fullseq/roi_phase_manifest_eligible.csv",
+    "phase_eligible_manifest_sha256": "ec01cd477430e7eebbd44b690446a892a0016d03a6508396badbc7e3ccd2a172",
+    "expected_train_rows": 1780,
+    "expected_valid_rows": 453,
+    "expected_segmentation_only_train_rows": 214,
+    "expected_segmentation_only_train_patients": 194,
+    "expected_legal_by_outer_fold": {
+      "1": {"rows": 1464, "patients": 818},
+      "2": {"rows": 1468, "patients": 819},
+      "3": {"rows": 1468, "patients": 819},
+      "4": {"rows": 1468, "patients": 819},
+      "5": {"rows": 1466, "patients": 819}
+    },
+    "metadata_patient_column": "病案号",
+    "manual_train_png_keys": ["631324_Pre", "661784R-C6_Pre"],
+    "adverse_extra_png_keys": ["558832R_Pre", "558832R_Post", "615855VA_Pre", "615855VA_Post"],
+    "segmentation_only_inner_partition": "inner_train"
+  },
+  "development": {
+    "outer_folds": [1, 4],
+    "inner_val_fraction": 0.15,
+    "base_seed": 20260808,
+    "max_epochs": 100,
+    "min_epochs": 15,
+    "patience": 20,
+    "threshold": 0.5,
+    "num_workers": 4,
+    "amp": true,
+    "resume": true
+  },
+  "augmentation": {
+    "enabled": true,
+    "geometry_probability": 0.8,
+    "rotation_degrees": 10.0,
+    "translate_fraction": 0.06,
+    "scale_delta": 0.10,
+    "brightness": 0.06,
+    "contrast": 0.10,
+    "noise_std": 0.01,
+    "horizontal_flip": false
+  },
+  "loss": {
+    "dice_weight": 0.8,
+    "bce_weight": 0.2,
+    "pos_weight_method": "sqrt_background_over_foreground",
+    "pos_weight_clip": [1.0, 20.0]
+  },
+  "models": {
+    "segresnet": {
+      "family": "segresnet",
+      "spatial_dims": 2,
+      "in_channels": 1,
+      "out_channels": 1,
+      "init_filters": 32,
+      "blocks_down": [1, 2, 2, 4],
+      "blocks_up": [1, 1, 1],
+      "dropout_prob": null,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.00001,
+      "physical_batch_size": 4,
+      "gradient_accumulation": 1,
+      "pretrained": false
+    },
+    "deeplabv3plus_resnet50_imagenet": {
+      "family": "deeplabv3plus_resnet50_imagenet",
+      "encoder_name": "resnet50",
+      "encoder_weights": "imagenet",
+      "in_channels": 3,
+      "classes": 1,
+      "activation": null,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "freeze_batch_norm_running_stats": true,
+      "physical_batch_candidates": [2, 4, 8],
+      "minimum_free_memory_fraction": 0.15,
+      "gradient_accumulation_if_batch2": 2,
+      "pretrained": true
+    }
+  },
+  "promotion_rule": {
+    "primary_metric": "mean_fold1_fold4_inner_valid_macro_dice",
+    "deeplab_minimum_mean_gain": 0.02,
+    "require_nonnegative_macro_gain_each_split": true,
+    "maximum_post_dice_deterioration": 0.01,
+    "maximum_severe_failure_rate_deterioration": 0.02,
+    "fallback_primary": "segresnet"
+  },
+  "all2d_promotion_rule": {
+    "primary_metric": "all2d_patient_inner_valid_macro_dice",
+    "deeplab_minimum_macro_gain": 0.02,
+    "maximum_post_dice_deterioration": 0.01,
+    "maximum_severe_failure_rate_deterioration": 0.02,
+    "fallback_primary": "segresnet"
+  },
+  "bootstrap": {"draws": 10000, "seed": 20260810},
+  "protected_roots": [
+    "/root/autodl-tmp/aneurysm/code/api_png2d_segresnet_cave_fusion_v5_series_mapped_teacher_ready",
+    "/root/autodl-tmp/aneurysm/configs/api_png2d_segresnet_cave_fusion_v5_series_mapped_teacher_ready_strict.json"
+  ]
+}

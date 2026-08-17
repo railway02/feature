@@ -1,0 +1,40 @@
+{
+  "version": "api_fullseq_v1",
+  "cpu_only": true,
+  "train_workbook": "/root/autodl-tmp/aneurysm/metadata/Train.xlsx",
+  "valid_workbook": "/root/autodl-tmp/aneurysm/metadata/valid.xlsx",
+  "ordinary_root": "/root/autodl-tmp/tiantanDSA",
+  "updated_root": "/root/autodl-tmp/aneurysm/staging/updated_10_cases",
+  "legacy_mapping_source": "/root/autodl-tmp/aneurysm/manifests/flow_manifest.csv",
+  "frame_regex": "^IMG-(\\d+)-(\\d+)\\.(jpg|jpeg)$",
+  "allowed_suffixes": [
+    ".jpg",
+    ".jpeg"
+  ],
+  "sort_order": [
+    "series_number",
+    "frame_index",
+    "filename_casefold"
+  ],
+  "parameter_maps_recorded_only": [
+    "CBF",
+    "CBV",
+    "MTT",
+    "TTP"
+  ],
+  "nifti_dependency_available": false,
+  "counts": {
+    "train_unique_patients": 1055,
+    "valid_unique_patients": 264,
+    "total_unique_patients": 1319,
+    "runnable_patients": 1243,
+    "excluded_patients": 76,
+    "manual_review_patients": 60,
+    "selected_frames": 49390,
+    "selected_png": 0,
+    "selected_parameter_maps": 0,
+    "mixed_dimension_phases": 0,
+    "frame_gap_phases": 1,
+    "multiple_internal_series_phases": 0
+  }
+}

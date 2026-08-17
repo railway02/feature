@@ -1,0 +1,41 @@
+{
+  "static_checks": {
+    "python_compile": "passed",
+    "bash_syntax": "passed"
+  },
+  "unit_tests": {
+    "count": 4,
+    "status": "passed",
+    "coverage": [
+      "minimal .nii.gz label reader fallback",
+      "all-nonzero ROI coverage",
+      "same ROI applied to every temporal frame",
+      "Pre/Post standalone mask path parsing"
+    ]
+  },
+  "synthetic_end_to_end": {
+    "status": "passed",
+    "layouts": [
+      "Image.nii.gz + Segmentation.nii.gz",
+      "standalone Post-Segmentation.nii.gz"
+    ],
+    "series_patterns": [
+      "Pre+Post",
+      "Post-only"
+    ],
+    "validated_stages": [
+      "source phase indexing",
+      "mask discovery",
+      "mask-to-series-phase mapping",
+      "full ROI manifest closure",
+      "ROI QA generation",
+      "stage-1 success lock",
+      "sharded on-the-fly local cropping",
+      "fake-CAVE full featurebank extraction",
+      "resume without recomputation",
+      "featurebank closure validation",
+      "series table generation"
+    ]
+  },
+  "real_gpu_execution": "not run in this environment because the real image tree, CAVE checkpoint, and server featurebank are not mounted here"
+}

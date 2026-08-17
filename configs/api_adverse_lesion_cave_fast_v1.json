@@ -1,0 +1,94 @@
+{
+  "version": "api_adverse_lesion_cave_fast_v1.3.2",
+  "project_root": "/root/autodl-tmp/aneurysm",
+  "upstream_v1_config": "/root/autodl-tmp/aneurysm/configs/api_adverse_lesion_cave_v1.json",
+  "upstream_v1_code": "/root/autodl-tmp/aneurysm/code/api_adverse_lesion_cave_v1",
+  "upstream_v1_manifests": "/root/autodl-tmp/aneurysm/manifests/api_adverse_lesion_cave_v1",
+  "upstream_v1_outputs": "/root/autodl-tmp/aneurysm/outputs/api_adverse_lesion_cave_v1",
+  "upstream_v1_reports": "/root/autodl-tmp/aneurysm/reports/api_adverse_lesion_cave_v1",
+  "train_excel": "/root/autodl-tmp/aneurysm/metadata/Train.xlsx",
+  "valid_excel": "/root/autodl-tmp/aneurysm/metadata/valid.xlsx",
+  "whole_train_tables": "/root/autodl-tmp/aneurysm/outputs/api_fullseq_cave_v3_tables/train",
+  "whole_valid_tables": "/root/autodl-tmp/aneurysm/outputs/api_fullseq_cave_v3_tables/valid",
+  "cave_code_root": "/root/autodl-tmp/aneurysm/code/api_fullseq_cave_v3",
+  "cave_repo": "/root/autodl-tmp/CAVE_DSA",
+  "checkpoint": "/root/autodl-tmp/CAVE_DSA/checkpoints/sequence_av_sigmoid_image512_ConvGRU_logical-star-1097.pt",
+  "checkpoint_sha256": "c90b7e066e32039cf61352993a9c57784caac6aa1fdb042dc4801df6dc729651",
+  "base_cave_config": "/root/autodl-tmp/aneurysm/configs/api_fullseq_cave_v3_frozen.json",
+  "v3_extractor": "/root/autodl-tmp/aneurysm/code/api_fullseq_v3/extract_pairdata.py",
+  "v3_base_config": "/root/autodl-tmp/aneurysm/configs/api_fullseq_v2_full_train_valid_config.json",
+  "v3_override_config": "/root/autodl-tmp/aneurysm/configs/api_fullseq_v3_improved_overrides.json",
+  "fixed_trainer": "/root/autodl-tmp/aneurysm/tools/api_fullseq_cave_v3_prediction_audit/train_cave_prediction_models_fixed.py",
+  "fixed_trainer_sha256": "10237a3eb62d9d2a3881e70bd25a97dfb0a86562d92e9e49904cdc02cedd6826",
+  "cave_python": "/root/autodl-tmp/envs/cave-dsa/bin/python",
+  "prediction_python": "/root/autodl-tmp/envs/aneurysm-ml/bin/python",
+  "paths": {
+    "code": "/root/autodl-tmp/aneurysm/code/api_adverse_lesion_cave_fast_v1",
+    "manifests": "/root/autodl-tmp/aneurysm/manifests/api_adverse_lesion_cave_fast_v1",
+    "outputs": "/root/autodl-tmp/aneurysm/outputs/api_adverse_lesion_cave_fast_v1",
+    "reports": "/root/autodl-tmp/aneurysm/reports/api_adverse_lesion_cave_fast_v1",
+    "logs": "/root/autodl-tmp/aneurysm/logs"
+  },
+  "upstream_required_markers": [
+    ".SEGMENTATION_OOF_SUCCESS",
+    ".SEGMENTATION_COMPLETE",
+    ".ROI_SUCCESS"
+  ],
+  "branches": {
+    "primary": "pred",
+    "mask_morphology": true,
+    "gt_roi_cave": false,
+    "all_nonzero_roi_cave": false
+  },
+  "segmentation_quality_audit": {
+    "controls_downstream_execution": false,
+    "must_be_reported_in_final_summary": true
+  },
+  "roi_cave": {
+    "bbox_source": "context_bbox",
+    "padding_factor": 3.0,
+    "maximum_side_fraction_inherited": 0.45,
+    "activity_fallback": {
+      "enabled": true,
+      "trigger": "activity_roi_too_small_only",
+      "method": "topk_activity_within_fov"
+    }
+  },
+  "aggregation": "median",
+  "prediction": {
+    "task": "adverse_patient",
+    "phase_mode": "prepost",
+    "models": ["Dummy", "Logistic_deep"],
+    "folds": 5,
+    "inner_folds": 3,
+    "c_grid": [0.01, 0.1, 1.0, 10.0],
+    "seed": 42
+  },
+  "oof_gain_audit": {
+    "minimum_auprc_gain": 0.015,
+    "maximum_auroc_drop_when_auprc_gate": 0.01,
+    "minimum_auroc_gain": 0.02,
+    "minimum_consistent_folds": 3,
+    "maximum_brier_worsening": 0.01,
+    "controls_valid_execution": false
+  },
+  "benchmark": {
+    "phase_count": 32,
+    "repetitions": 1,
+    "gpu_process_candidates": [1, 2, 4],
+    "io_worker_candidates": [4, 8],
+    "amp": true,
+    "cosine_minimum": 0.99999,
+    "embedding_max_abs_tolerance": 0.005,
+    "embedding_mean_abs_tolerance": 0.0001,
+    "relative_l2_tolerance": 0.0001
+  },
+  "runtime": {
+    "recommended_gpu_processes": 1,
+    "recommended_io_workers": 4,
+    "disable_per_view_empty_cache": false,
+    "cuda_visible_devices": "0",
+    "omp_num_threads": 8,
+    "seed": 42
+  }
+}

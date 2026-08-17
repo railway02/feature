@@ -1,0 +1,58 @@
+{
+  "project": "api_fullseq_cave_v3_featurebank",
+  "cave_commit": "c3b0c215db4029368c9499a12417178014d58d6f",
+  "checkpoint_relative_path": "checkpoints/sequence_av_sigmoid_image512_ConvGRU_logical-star-1097.pt",
+  "checkpoint_sha256": "c90b7e066e32039cf61352993a9c57784caac6aa1fdb042dc4801df6dc729651",
+  "checkpoint_size": 332731061,
+  "image_size": 512,
+  "max_sequence_length": 20,
+  "temporal_views": [
+    "uniform_full20",
+    "contrast_core20"
+  ],
+  "strict_contiguous_blocks": true,
+  "primary_vessel_probability": "max(sigmoid_artery,sigmoid_vein)",
+  "auxiliary_vessel_probability": "1-(1-artery)*(1-vein)",
+  "primary_embedding_dimension": 5120,
+  "primary_embedding_blocks": [
+    "f5_global_mean",
+    "f5_vessel_mean",
+    "f5_artery_mean",
+    "f5_vein_mean",
+    "f5_active_vessel_mean",
+    "f5_vessel_top10_abs_magnitude",
+    "f4_vessel_mean",
+    "f4_artery_mean",
+    "f4_active_vessel_mean",
+    "f4_vessel_top10_abs_magnitude"
+  ],
+  "trajectory_resampled_length": 16,
+  "scalar_feature_count": 206,
+  "amp": true,
+  "labels_forbidden": true,
+  "training_forbidden": true,
+  "manifest_rescan_forbidden": true,
+  "train_manifest": "/root/autodl-tmp/aneurysm/manifests/api_fullseq_v3_train_all_series_frozen.csv",
+  "valid_manifest": "/root/autodl-tmp/aneurysm/manifests/api_fullseq_v3_valid_all_series_frozen.csv",
+  "expected_counts": {
+    "train": {
+      "series": 1147,
+      "patients": 1055,
+      "pre": 940,
+      "post": 1147,
+      "phases": 2087
+    },
+    "valid": {
+      "series": 287,
+      "patients": 264,
+      "pre": 248,
+      "post": 287,
+      "phases": 535
+    }
+  },
+  "v3_expected_hashes": {
+    "v3_extractor_sha256": "",
+    "v3_base_config_sha256": "",
+    "v3_override_config_sha256": ""
+  }
+}
