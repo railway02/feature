@@ -1,0 +1,18 @@
+{
+  "execution_limits": {
+    "labels_forbidden": true,
+    "training_forbidden": true
+  },
+  "v3": {
+    "science_profile": "improved",
+    "adaptive_baseline": {
+      "window_frames": 3,
+      "max_start_position": 3
+    },
+    "polarity_ambiguity_margin": 0.08,
+    "vessel_mask": {
+      "vesselness_percentile": 65.0,
+      "minimum_component_pixels": 16
+    }
+  }
+}

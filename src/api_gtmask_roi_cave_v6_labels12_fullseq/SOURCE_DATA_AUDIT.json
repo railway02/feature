@@ -1,0 +1,29 @@
+{
+  "source_manifests": {
+    "Train": {
+      "path_in_review_environment": "/mnt/data/train_all_series_manifest(10).csv",
+      "sha256": "02297c6a21c6c5b92f34510ce23b1141a0cb9809a1bf4d18f204fdeffd121db8",
+      "series": 1147,
+      "patients": 1055,
+      "pre_phases": 940,
+      "post_phases": 1147,
+      "total_phases": 2087
+    },
+    "Valid": {
+      "path_in_review_environment": "/mnt/data/valid_all_series_manifest(11).csv",
+      "sha256": "e0adb4ba70ebea21cdccc0db9c15a35dca845d91ea113ef885d6eab3a412dd15",
+      "series": 287,
+      "patients": 264,
+      "pre_phases": 248,
+      "post_phases": 287,
+      "total_phases": 535
+    }
+  },
+  "total": {
+    "series": 1434,
+    "patients": 1319,
+    "phases": 2622
+  },
+  "required_stage1_closure": "2622/2622 source phases must have exactly one accepted existing GT mask and one ROI before full CAVE extraction starts",
+  "segmentation_training": false
+}

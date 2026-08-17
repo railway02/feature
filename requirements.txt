@@ -1,0 +1,21 @@
+# Install a CUDA-compatible PyTorch build separately when GPU acceleration is required.
+numpy
+pandas
+scipy
+scikit-learn
+scikit-image
+openpyxl
+Pillow
+opencv-python
+imageio
+matplotlib
+seaborn
+tqdm
+PyYAML
+nibabel
+catboost
+torch
+torchvision
+tensorboard
+huggingface-hub
+ptlflow
