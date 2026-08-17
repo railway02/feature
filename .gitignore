@@ -1,20 +1,12 @@
-# Raw clinical data and generated experiment artifacts
+# Never commit clinical data or generated artifacts
 data/
-datasets/
-metadata/
-manifests/
 outputs/
-artifacts/
+logs/
 models/
 checkpoints/
-logs/
-reports/**/*.csv
-reports/**/*.json
+*.csv
 *.xlsx
 *.xls
-*.csv
-*.tsv
-*.parquet
 *.npz
 *.npy
 *.nii
@@ -23,33 +15,12 @@ reports/**/*.json
 *.pt
 *.pth
 *.ckpt
-*.tar
-*.tar.gz
-*.zip
 
-# Local environments, caches and editor state
+# Local state and historical patch copies
+.env
 .venv/
-venv/
-envs/
-conda_pkgs/
 __pycache__/
 *.py[cod]
-.pytest_cache/
-.mypy_cache/
-.idea/
-.vscode/
-
-# Credentials and local overrides
-.env
-.env.*
-!.env.example
-*.pem
-*.key
-credentials*.json
-
-# Historical local patch copies
 *.orig
 *.rej
-*.bak
-*.bak_*
-*.before*
+*.bak*
